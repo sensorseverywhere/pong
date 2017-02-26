@@ -1,5 +1,11 @@
+@font-face {
+    font-family: Atari;
+    src: url(../fonts/codeman38_press-start-2p/PressStart2P.ttf);
+}
+
 body{
     background-color: #bbb;
+    font-family: 'Atari', Fallback, Arial;
 }
 #canvas{
     background-color: #fff;
