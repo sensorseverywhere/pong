@@ -45,37 +45,46 @@
                     lastPlay = 0,
                     playerScore = 0,
                     computerScore = 0,
-                    vx = 10,
+                    vx = 8,
                     vy = 2,
                     angle = 0,
                     playerSpeed = 0,
                     computerSpeed = 5,
                     easing = 0.5,
                     bounce = -1;
+
+                function init() {
+                    ball.x = canvas.width / 2;
+                    ball.y = canvas.height / 2;
+
+                    topBar.x = 0;
+                    topBar.y = 0;
+                    bottomBar.x = 0;
+                    bottomBar.y = canvas.height - bottomBar.height;
+
+                     for (var dash, i = 0; i < numCenterDashes; i++) {
+                        dash = new Box(10, 60);
+                        dash.x = canvas.width / 2 - (dash.width / 2);
+                        dash.y = 10 + (i * 104);
+                        centerDash.push(dash);
+                    };
+
+
+                    player.x = 50;
+                    player.y = canvas.height / 2 - player.height / 2;
+
+                    computer.x = canvas.width - 50;
+                    computerY = canvas.height / 2 - (computer.height / 2 - 50);
+                    computer.y = computerY;
+
+                    ball.draw(context);
+                    player.draw(context);
+                    computer.draw(context);
+                    topBar.draw(context); //move 
+                    bottomBar.draw(context); //move
+                    centerDash.forEach(draw); //move
+                }
              
-
-                ball.x = canvas.width / 2;
-                ball.y = canvas.height / 2;
-
-                topBar.x = 0;
-                topBar.y = 0;
-                bottomBar.x = 0;
-                bottomBar.y = canvas.height - bottomBar.height;
-
-                 for (var dash, i = 0; i < numCenterDashes; i++) {
-                    dash = new Box(10, 60);
-                    dash.x = canvas.width / 2 - (dash.width / 2);
-                    dash.y = 10 + (i * 104);
-                    centerDash.push(dash);
-                };
-
-
-                player.x = 50;
-                player.y = canvas.height / 2 - player.height / 2;
-
-                computer.x = canvas.width - 50;
-                computerY = canvas.height / 2 - (computer.height / 2 - 50);
-                computer.y = computerY;
 
                 function draw(dash){
                   
@@ -163,27 +172,21 @@
                     }
                 }
 
-                function delayStart() {
-                    setTimeout(function () {
-                        console.log('delaying');
-                    },1000);
-                }
+         
+                function drawFrame(){
 
-                 window.addEventListener('keydown', function(event) {
-                    playerSpeed = 10;
-                    if(event.keyCode === 40) { //up
-                        player.y += playerSpeed;
-                    } else if(event.keyCode === 38) { //down
-                        player.y -= playerSpeed;
+                    if (ball.x > canvas.width + 10 ) {
+                        updateScore('player');
+                        context.clearRect(0, 0, canvas.width, canvas.height);
+                        init();
+                        return;
                     }
-                    
-                 }, false);
-
-                 window.addEventListener('keyup', function(event){
-                    playerSpeed = 0;
-                 }, false);
-            
-                (function drawFrame(){
+                    if(ball.x < -10){
+                        updateScore('computer');
+                        context.clearRect(0, 0, canvas.width, canvas.height);
+                        init();
+                        return;
+                    }
 
                     window.requestAnimationFrame(drawFrame, canvas);
                   
@@ -196,25 +199,37 @@
                         updateComputer();
                     }
                     checkBoundaries();
-                     if (ball.x > canvas.width ) {
-                        updateScore('player');
-                        ball.x = canvas.width / 2;
-                        ball.y = canvas.height / 2;
-                    //    delayStart();
-                    }
-                    if(ball.x < 0){
-                        updateScore('computer');
-                        ball.x = canvas.width / 2;
-                        ball.y = canvas.height / 2;
-                    //    delayStart();
-                    }
+
                     ball.draw(context);
                     player.draw(context);
                     computer.draw(context);
                     topBar.draw(context); //move 
                     bottomBar.draw(context); //move
                     centerDash.forEach(draw); //move
-                }());
+                };
+
+                window.addEventListener('keydown', function(event) {
+                    playerSpeed = 10;
+                    if(event.keyCode === 40) { //up
+                        player.y += playerSpeed;
+                    } else if(event.keyCode === 38) { //down
+                        player.y -= playerSpeed;
+                    }
+                    
+                 }, false);
+
+                 window.addEventListener('keyup', function(event){
+                    playerSpeed = 0;
+                 }, false);
+
+                window.addEventListener('keydown', function(event){
+                    if(event.keyCode === 32) {
+                        drawFrame();
+                    }
+                });
+
+                init();
+
             };
 
         </script>
