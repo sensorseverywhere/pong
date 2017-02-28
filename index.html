@@ -52,7 +52,8 @@
                     playerSpeed = 0,
                     computerSpeed = 5,
                     easing = 0.5,
-                    bounce = -1;
+                    bounce = -1,
+                    spaceBarCount = 0;
 
                 function init() {
                     ball.x = canvas.width / 2;
@@ -88,6 +89,8 @@
                     topBar.draw(context); //move 
                     bottomBar.draw(context); //move
                     centerDash.forEach(draw); //move
+
+                    spaceBarCount = 0;
                 }
              
 
@@ -232,7 +235,14 @@
 
                 window.addEventListener('keydown', function(event){
                     if(event.keyCode === 32) {
-                        drawFrame();
+                        spaceBarCount++;
+                        if(spaceBarCount === 1) {
+                            drawFrame();
+                        } else {
+                            return;
+                        }
+                        
+                        console.log(spaceBarCount);
                     }
                 });
 
