@@ -8,7 +8,7 @@
             <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
-        <h2>Click the canvas to start the game</h2>
+        <h2>Press space to start</h2>
        <canvas id="canvas" width="800" height="600"/>
 
         <script src="js/utils.js"></script>
@@ -55,6 +55,11 @@
                     bounce = -1,
                     spaceBarCount = 0;
 
+                    context.font = '40pt Atari';
+                    context.fillStyle = 'red';
+                    context.fillText(playerScore, 200, 100);
+                    context.fillText(computerScore, 600, 100);
+
                 function init() {
                     ball.x = canvas.width / 2;
                     ball.y = canvas.height / 2;
@@ -79,7 +84,7 @@
                     player.y = canvas.height / 2 - player.height / 2;
 
                     computer.x = canvas.width - 50;
-                    computerY = canvas.height / 2 - (computer.height / 2 - 50);
+                    computerY = canvas.height / 2 - (computer.height / 2);
                     computer.y = computerY;
 
                     ball.draw(context);
@@ -89,6 +94,9 @@
                     topBar.draw(context); //move 
                     bottomBar.draw(context); //move
                     centerDash.forEach(draw); //move
+
+                    context.fillText(playerScore, 200, 100);
+                    context.fillText(computerScore, 600, 100);
 
                     spaceBarCount = 0;
                 }
@@ -101,10 +109,10 @@
 
                 function updateScore(side){
                     if(side === 'player') {
-                        //console.log(playerScore++);
+                        context.fillText(++playerScore, 200, 100);
                         return;
                     } else if(side === 'computer') {
-                        //console.log(computerScore++);
+                        context.fillText(++computerScore, 600, 100);
                         return;
                     }
                 }
@@ -137,16 +145,12 @@
                         ball.rotation = ((canvas.height / 2 - ball.y) * 0.1) * Math.PI / 180;
                         if(ball.y <= player.y + (player.height / 4)) {
                             vy += vy + ball.rotation * 3;
-                            console.log('top quarter');
                         } else if((ball.y <= player.y + (player.height / 2)) && (ball.y >= player.y + (player.height / 4))) {
                             vy += vy + ball.rotation;
-                            console.log(vy);
                         } else if(ball.y >= (player.y + (player.height - player.height / 4))){
                             vy -= vy + ball.rotation * 3;
-                            console.log(vy);
                         } else if(ball.y >= (player.y + (player.height - player.height / 2))){
                             vy -= vy + ball.rotation;
-                            console.log(vy);
                         } 
 						//console.log("ball y: " + ball.y + " player y : " + player.y + " player height: " + player.height);
                         lastPlay = 0;
@@ -157,16 +161,12 @@
                         ball.rotation = ((canvas.height / 2 - ball.y) * 0.1) * Math.PI / 180;
                         if(ball.y <= computer.y + (computer.height / 4)) {
                             vy += vy + ball.rotation * 3;
-                            console.log(vy);
                         } else if((ball.y <= computer.y + (computer.height / 2)) && (ball.y >= computer.y + (computer.height / 4))) {
                             vy += vy + ball.rotation;
-                            console.log(vy);
                         } else if(ball.y >= (computer.y + (computer.height - computer.height / 4))){
                             vy -= vy + ball.rotation * 3;
-                            console.log(vy);
                         } else if(ball.y >= (computer.y + (computer.height - computer.height / 2))){
                             vy -= vy + ball.rotation;
-                            console.log(vy);
                         } 
                         lastPlay = 1;
                     }
@@ -217,6 +217,9 @@
                     topBar.draw(context); //move 
                     bottomBar.draw(context); //move
                     centerDash.forEach(draw); //move
+
+                    context.fillText(playerScore, 200, 100);
+                    context.fillText(computerScore, 600, 100);
                 };
 
                 window.addEventListener('keydown', function(event) {
@@ -242,7 +245,6 @@
                             return;
                         }
                         
-                        console.log(spaceBarCount);
                     }
                 });
 
