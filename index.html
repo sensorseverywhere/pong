@@ -8,8 +8,8 @@
             <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
-        <h2>Press space to start</h2>
-       <canvas id="canvas" width="800" height="600"/>
+       <!--  <h2>Press space to start</h2> -->
+       <canvas id="canvas"/>
 
         <script src="js/utils.js"></script>
         <script src="js/ball.js"></script>
@@ -55,27 +55,29 @@
                     bounce = -1,
                     spaceBarCount = 0;
 
-                    context.font = '40pt Atari';
-                    context.fillStyle = 'red';
-                    context.fillText(playerScore, 200, 100);
-                    context.fillText(computerScore, 600, 100);
 
                 function init() {
+                    context.font = "20pt Atari";
+                    context.fillStyle = 'black';
+                    context.fillText(playerScore, canvas.width / 4, 100);
+                    context.fillText(computerScore, (canvas.width / 4) * 3, 100);
+                    context.fillText('Press space to start', (canvas.width / 4), 300);
                     ball.x = canvas.width / 2;
                     ball.y = canvas.height / 2;
                     ballCover.x = ball.x - 5;
                     ballCover.y = ball.y - 5;
 
-
+                    topBar.width = canvas.width;
                     topBar.x = 0;
                     topBar.y = 0;
+                    bottomBar.width = canvas.width;
                     bottomBar.x = 0;
                     bottomBar.y = canvas.height - bottomBar.height;
 
                      for (var dash, i = 0; i < numCenterDashes; i++) {
                         dash = new Box(10, 60);
                         dash.x = canvas.width / 2 - (dash.width / 2);
-                        dash.y = 10 + (i * 104);
+                        dash.y = 20 + (i * (canvas.height / 6));
                         centerDash.push(dash);
                     };
 
@@ -94,9 +96,6 @@
                     topBar.draw(context); //move 
                     bottomBar.draw(context); //move
                     centerDash.forEach(draw); //move
-
-                    context.fillText(playerScore, 200, 100);
-                    context.fillText(computerScore, 600, 100);
 
                     spaceBarCount = 0;
                 }
@@ -218,9 +217,8 @@
                     bottomBar.draw(context); //move
                     centerDash.forEach(draw); //move
 
-                    context.fillText(playerScore, 200, 100);
-                    context.fillText(computerScore, 600, 100);
-                };
+                    context.fillText(playerScore, canvas.width / 4, 100);
+                    context.fillText(computerScore, (canvas.width / 4) * 3, 100);                };
 
                 window.addEventListener('keydown', function(event) {
                     playerSpeed = 10;
@@ -232,7 +230,7 @@
                     
                  }, false);
 
-                 window.addEventListener('keyup', function(event){
+                window.addEventListener('keyup', function(event){
                     playerSpeed = 0;
                  }, false);
 
@@ -248,6 +246,14 @@
                     }
                 });
 
+                window.addEventListener('resize', resizeCanvas, false);
+
+                function resizeCanvas() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                    init();
+                }
+                resizeCanvas();
                 init();
 
             };
